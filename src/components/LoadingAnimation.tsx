@@ -1,11 +1,11 @@
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
 interface LoadingAnimationProps {
   isLoading?: boolean;
 }
 
 const LoadingAnimation = ({ isLoading = true }: LoadingAnimationProps) => {
-  const leafVariants = {
+  const leafVariants: Variants = {
     hidden: { scale: 0, opacity: 0 },
     visible: {
       scale: 1,
@@ -13,19 +13,33 @@ const LoadingAnimation = ({ isLoading = true }: LoadingAnimationProps) => {
       transition: {
         duration: 1,
         repeat: Infinity,
-        repeatType: "reverse",
+        repeatType: "reverse" as const,
       },
     },
   };
 
-  const stemVariants = {
+  const leafVariantsDelayed: Variants = {
+    hidden: { scale: 0, opacity: 0 },
+    visible: {
+      scale: 1,
+      opacity: 1,
+      transition: {
+        duration: 1,
+        repeat: Infinity,
+        repeatType: "reverse" as const,
+        delay: 0.01,
+      },
+    },
+  };
+
+  const stemVariants: Variants = {
     hidden: { height: 0 },
     visible: {
       height: 100,
       transition: {
         duration: 1.5,
         repeat: Infinity,
-        repeatType: "reverse",
+        repeatType: "reverse" as const,
       },
     },
   };
@@ -62,8 +76,7 @@ const LoadingAnimation = ({ isLoading = true }: LoadingAnimationProps) => {
           className="absolute bottom-[150px] left-1/2 -translate-x-1/2"
           initial="hidden"
           animate="visible"
-          variants={leafVariants}
-          style={{ transition: { delay: 0.01 } }}
+          variants={leafVariantsDelayed}
         >
           <div className="relative">
             <div className="absolute w-6 h-6 bg-green-300 rounded-full -left-6 transform -rotate-45" />
