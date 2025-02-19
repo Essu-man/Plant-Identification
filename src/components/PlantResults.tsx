@@ -1,8 +1,8 @@
-import React from "react";
-import { Card } from "./ui/card";
-import { Badge } from "./ui/badge";
-import CareInstructionsGrid from "./CareInstructionsGrid";
 import { motion } from "framer-motion";
+import CareInstructionsGrid from "./CareInstructionsGrid";
+import { Badge } from "./ui/badge";
+import { Card } from "./ui/card";
+
 
 interface PlantDetails {
   name: string;

@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 
 interface LoadingAnimationProps {
@@ -64,7 +63,7 @@ const LoadingAnimation = ({ isLoading = true }: LoadingAnimationProps) => {
           initial="hidden"
           animate="visible"
           variants={leafVariants}
-          style={{ transition: { delay: 0.3 } }}
+          style={{ transition: { delay: 0.01 } }}
         >
           <div className="relative">
             <div className="absolute w-6 h-6 bg-green-300 rounded-full -left-6 transform -rotate-45" />
