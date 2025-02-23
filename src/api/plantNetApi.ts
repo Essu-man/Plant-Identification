@@ -16,7 +16,7 @@ interface PlantImage {
 interface PlantResult {
   species?: PlantSpecies;
   images?: PlantImage[];
-  score?: number; // Ensure this matches the API response
+  score?: number;
 }
 
 interface PlantResponse {
