@@ -17,61 +17,49 @@ interface PlantResultsProps {
   isVisible?: boolean;
 }
 
-const defaultPlantDetails: PlantDetails = {
-  name: "Monstera Deliciosa",
-  scientificName: "Monstera deliciosa",
-  description:
-    "The Swiss Cheese Plant is a species of flowering plant native to tropical forests of southern Mexico, south to Panama. It has large, glossy, perforated leaves that develop unique holes as they mature.",
-  confidence: 95,
-  imageUrl:
-    "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?ixlib=rb-4.0.3",
-};
-
 const PlantResults = ({ imageFile, isVisible = true }: PlantResultsProps) => {
-  const [plantDetails, setPlantDetails] = useState<PlantDetails>(defaultPlantDetails);
+  const [plantDetails, setPlantDetails] = useState<PlantDetails | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      // Check if imageFile exists
       if (!imageFile) {
-        console.warn("No image file provided, using default details.");
+        console.warn("No image file provided.");
         return;
       }
 
-      console.log("Attempting to fetch plant details for image:", imageFile.name);
-
+      console.log("Fetching plant details for:", imageFile.name);
       setLoading(true);
       setError(null);
 
       try {
-        // Simulate fetching plant details
-        const details = defaultPlantDetails;
-        console.log("Successfully fetched plant details:", details);
-        setPlantDetails(details);
+        const formData = new FormData();
+        formData.append('image', imageFile);
+
+        const response = await fetch('http://localhost:5000/identify', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!response.ok) {
+          throw new Error(`Server error: ${response.statusText}`);
+        }
+
+        const data: PlantDetails = await response.json();
+        console.log("Fetched plant details:", data);
+        setPlantDetails(data);
       } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : "Unknown error occurred";
-        console.error("Failed to fetch plant details:", errorMessage);
+        const errorMessage = err instanceof Error ? err.message : "Unknown error";
+        console.error("Fetch error:", errorMessage);
         setError(errorMessage);
       } finally {
         setLoading(false);
-        console.log("Fetch operation completed. Loading:", loading, "Error:", error);
       }
     };
 
     fetchData();
-
-    // Cleanup function (optional)
-    return () => {
-      console.log("Cleaning up useEffect for imageFile:", imageFile?.name);
-    };
-  }, [imageFile]); // Dependency array
-
-  // Log the current state for debugging
-  console.log("Current plantDetails:", plantDetails);
-  console.log("Current loading state:", loading);
-  console.log("Current error state:", error);
+  }, [imageFile]);
 
   if (loading) {
     return <div className="text-center py-4">Loading plant details...</div>;
@@ -83,6 +71,10 @@ const PlantResults = ({ imageFile, isVisible = true }: PlantResultsProps) => {
         Error: {error}. Please check the image file and try again.
       </div>
     );
+  }
+
+  if (!plantDetails) {
+    return <div className="text-center py-4">No plant details available.</div>;
   }
 
   return (
