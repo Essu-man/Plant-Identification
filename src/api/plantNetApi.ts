@@ -66,7 +66,7 @@ export const fetchPlantDetails = async (imageFile: File): Promise<{
       name: plantDetails.species.commonNames?.[0] || 'Unknown Plant',
       scientificName: plantDetails.species.scientificNameWithoutAuthor || 'Unknown',
       description: plantDetails.species.description || 'No description available',
-      confidence: (plantDetails.score || 0) * 100, // Ensure 'score' exists in response
+      confidence: (plantDetails.score || 0) * 100,
       imageUrl: plantDetails.images?.[0]?.url?.o || '',
     };
   } catch (error) {
