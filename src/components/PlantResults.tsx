@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { fetchPlantDetails } from "../api/plantNetApi";
 import CareInstructionsGrid from "./CareInstructionsGrid";
 import { Badge } from "./ui/badge";
 import { Card } from "./ui/card";
@@ -47,7 +46,8 @@ const PlantResults = ({ imageFile, isVisible = true }: PlantResultsProps) => {
       setError(null);
 
       try {
-        const details = await fetchPlantDetails(imageFile);
+        // Simulate fetching plant details
+        const details = defaultPlantDetails;
         console.log("Successfully fetched plant details:", details);
         setPlantDetails(details);
       } catch (err) {
